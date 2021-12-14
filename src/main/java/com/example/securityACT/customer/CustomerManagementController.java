@@ -17,22 +17,26 @@ public class CustomerManagementController {
 
     @GetMapping
     public List<Customer> getAllCustomers() {
+        System.out.println("getAllCustomers");
         return CUSTOMERS;
     }
 
     @PostMapping
     public void registerNewCustomer(@RequestBody Customer customer) {
+        System.out.println("registerNewCustomer");
         System.out.println(customer);
     }
 
     @DeleteMapping(path = "{customerId}")
     public void deleteCustomer(@PathVariable("customerId") Integer customerId) {
+        System.out.println("deleteCustomer");
         System.out.println(customerId);
     }
 
     @PutMapping(path = "{customerId}")
     public void updateCustomer(@PathVariable("customerId")Integer customerId, @RequestBody Customer customer) {
-        System.out.println(String.format("%s %s", customer, customer));
+        System.out.println("updateCustomer");
+        System.out.println(String.format("%s %s", customerId, customer));
     }
 
 }
