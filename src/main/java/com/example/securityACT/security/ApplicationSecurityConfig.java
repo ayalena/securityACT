@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static com.example.securityACT.security.ApplicationUserPermission.*;
 import static com.example.securityACT.security.ApplicationUserRole.*;
@@ -30,6 +31,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+
+//                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())   // actually would want to use this with forms etc, but for now because we use postman and it's not a real website, it's disabled
+//                .and()
+
                 .csrf().disable()
                 .authorizeRequests()
 
