@@ -13,4 +13,9 @@ public class TemplateController {
         return "login";
     }
 
+    @GetMapping("products")
+    public String getProducts() {
+        return "products";
+    }
+
 }
