@@ -38,9 +38,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(("/api/**")).hasRole(CUSTOMER.name())
 
                 //AUTHORITIES
-                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(PRODUCT_WRITE.name())
-                .antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(PRODUCT_WRITE.name())
-                .antMatchers(HttpMethod.PUT,"/management/api/**").hasAuthority(PRODUCT_WRITE.name())
+                .antMatchers(HttpMethod.DELETE,"/management/api/**").hasAuthority(PRODUCT_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST,"/management/api/**").hasAuthority(PRODUCT_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT,"/management/api/**").hasAuthority(PRODUCT_WRITE.getPermission())
                 .antMatchers(HttpMethod.GET,"/management/api/**").hasAnyRole(ADMIN.name(), ADMINTRAINEE.name())
 
                 .anyRequest()
