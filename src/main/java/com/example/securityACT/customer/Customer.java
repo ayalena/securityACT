@@ -17,4 +17,12 @@ public class Customer {
     public String getCustomerName() {
         return customerName;
     }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "customerId=" + customerId +
+                ", customerName='" + customerName + '\'' +
+                '}';
+    }
 }
