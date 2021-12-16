@@ -57,13 +57,16 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .httpBasic()
 
                 .formLogin()
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/products", true)
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/products", true)
+                    .passwordParameter("password") //can customise with these parameters
+                    .usernameParameter("username")
                 .and()
 
                 .rememberMe()
                     .tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(21))
                     .key("averysecuredkey")
+                    .rememberMeParameter("remember-me")
                 .and()
 
                 .logout()
