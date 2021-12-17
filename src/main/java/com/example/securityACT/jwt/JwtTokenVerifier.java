@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.crypto.SecretKey;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,15 @@ import java.util.stream.Collectors;
 
 public class JwtTokenVerifier extends OncePerRequestFilter {
 
+    private final SecretKey secretKey;
+    private final JwtConfig jwtConfig;
+
+    public JwtTokenVerifier(SecretKey secretKey,
+                            JwtConfig jwtConfig) {
+        this.secretKey = secretKey;
+        this.jwtConfig = jwtConfig;
+    }
+
     //executed once per request (coming from client)
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -31,22 +41,24 @@ public class JwtTokenVerifier extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         //get token from header
-        String authorizationHeader = request.getHeader("Authorization");
+//        String authorizationHeader = request.getHeader("Authorization");
+        String authorizationHeader = request.getHeader(jwtConfig.getAuthorizationHeader());
+
 
         //reject if no header/doesn't start with bearer
-        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+        if (Strings.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith(jwtConfig.getTokenPrefix())) {
             filterChain.doFilter(request, response);
             return;
         }
 
-        String token = authorizationHeader.replace("Bearer ", "");
+        String token = authorizationHeader.replace(jwtConfig.getTokenPrefix(), "");
 
         //if it does:
         try {
             //parse the token
-            String secretKey = "secureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKey";
+//            String secretKey = "secureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKeysecureStrongAndVeryLongKey";
             Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes()))
+                    .setSigningKey(secretKey)
                     .parseClaimsJws(token);
 
             //get body
